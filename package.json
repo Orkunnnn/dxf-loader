@@ -1,0 +1,59 @@
+{
+  "name": "@loaders.gl/dxf",
+  "version": "4.4.0-alpha.12",
+  "description": "Framework-independent loader for the DXF (AutoCAD) format",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/orkun/dxf-loader"
+  },
+  "keywords": [
+    "webgl",
+    "loader",
+    "parser",
+    "DXF",
+    "AutoCAD",
+    "CAD",
+    "geometry",
+    "geospatial"
+  ],
+  "types": "dist/index.d.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./dxf-worker.js": {
+      "import": "./dist/dxf-worker.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "src",
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc && npm run build-worker",
+    "build-worker": "esbuild src/workers/dxf-worker.ts --bundle --outfile=dist/dxf-worker.js --define:__VERSION__=\\\"$npm_package_version\\\" --platform=browser --format=esm"
+  },
+  "dependencies": {
+    "@loaders.gl/loader-utils": "^4.4.0-alpha.12",
+    "@loaders.gl/schema": "^4.4.0-alpha.12"
+  },
+  "peerDependencies": {
+    "@loaders.gl/core": "^4.4.0-alpha.1"
+  },
+  "devDependencies": {
+    "@vis.gl/ts-plugins": "^1.0.0",
+    "esbuild": "^0.20.0",
+    "typescript": "~5.5.0"
+  }
+}
