@@ -1,0 +1,1 @@
+{"version":3,"file":"convert-text.d.ts","sourceRoot":"","sources":["../../../src/lib/converters/convert-text.ts"],"names":[],"mappings":"AAIA,OAAO,KAAK,EAAC,OAAO,EAAE,KAAK,EAAC,MAAM,oBAAoB,CAAC;AACvD,OAAO,KAAK,EAAC,aAAa,EAAE,cAAc,EAAC,MAAM,UAAU,CAAC;AAE5D,wBAAgB,WAAW,CACzB,MAAM,EAAE,aAAa,GAAG,cAAc,EACtC,SAAS,EAAE,OAAO,GACjB,OAAO,CAAC,KAAK,CAAC,CA2BhB"}

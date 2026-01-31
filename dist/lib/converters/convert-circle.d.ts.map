@@ -1,0 +1,1 @@
+{"version":3,"file":"convert-circle.d.ts","sourceRoot":"","sources":["../../../src/lib/converters/convert-circle.ts"],"names":[],"mappings":"AAIA,OAAO,KAAK,EAAC,OAAO,EAAE,OAAO,EAAC,MAAM,oBAAoB,CAAC;AACzD,OAAO,KAAK,EAAC,eAAe,EAAC,MAAM,UAAU,CAAC;AAG9C,wBAAgB,aAAa,CAC3B,MAAM,EAAE,eAAe,EACvB,cAAc,EAAE,MAAM,EACtB,SAAS,EAAE,OAAO,GACjB,OAAO,CAAC,OAAO,CAAC,CAYlB"}

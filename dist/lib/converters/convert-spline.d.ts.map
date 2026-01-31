@@ -1,0 +1,1 @@
+{"version":3,"file":"convert-spline.d.ts","sourceRoot":"","sources":["../../../src/lib/converters/convert-spline.ts"],"names":[],"mappings":"AAIA,OAAO,KAAK,EAAC,OAAO,EAAE,UAAU,EAAC,MAAM,oBAAoB,CAAC;AAC5D,OAAO,KAAK,EAAC,eAAe,EAAC,MAAM,UAAU,CAAC;AAG9C,wBAAgB,aAAa,CAC3B,MAAM,EAAE,eAAe,EACvB,qBAAqB,EAAE,MAAM,EAC7B,SAAS,EAAE,OAAO,GACjB,OAAO,CAAC,UAAU,CAAC,CAmCrB"}
