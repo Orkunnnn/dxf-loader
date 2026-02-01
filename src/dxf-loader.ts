@@ -4,7 +4,10 @@
 
 import type {LoaderWithParser, LoaderOptions} from '@loaders.gl/loader-utils';
 import type {GeoJSONTable, ObjectRowTable} from '@loaders.gl/schema';
-import {parseDXF} from './lib/parse-dxf';
+import type {DXFDocument} from './lib/types';
+import type {DXFArrowTables} from './lib/converters/convert-to-arrow-table';
+import {parseDXF, parseDXFDocument} from './lib/parse-dxf';
+import {convertDXFDocumentToArrowTables} from './lib/converters/convert-to-arrow-table';
 
 // __VERSION__ is injected by babel-plugin-version-inline
 // @ts-ignore TS2304: Cannot find name '__VERSION__'.
@@ -13,7 +16,7 @@ const VERSION = typeof __VERSION__ !== 'undefined' ? __VERSION__ : 'latest';
 export type DXFLoaderOptions = LoaderOptions & {
   dxf?: {
     /** Output format */
-    shape?: 'geojson-table' | 'object-row-table';
+    shape?: 'geojson-table' | 'object-row-table' | 'arrow-table' | 'dxf-document';
     /** Number of segments for circle/arc tessellation */
     circleSegments?: number;
     /** Number of interpolation points per spline span */
@@ -39,7 +42,7 @@ export type DXFLoaderOptions = LoaderOptions & {
  * Loader for DXF (AutoCAD Drawing Exchange Format)
  */
 export const DXFLoader = {
-  dataType: null as unknown as ObjectRowTable | GeoJSONTable,
+  dataType: null as unknown as ObjectRowTable | GeoJSONTable | DXFArrowTables | DXFDocument,
   batchType: null as never,
 
   name: 'DXF (AutoCAD)',
@@ -68,14 +71,21 @@ export const DXFLoader = {
       include3D: true
     }
   }
-} as const satisfies LoaderWithParser<ObjectRowTable | GeoJSONTable, never, DXFLoaderOptions>;
+} as const satisfies LoaderWithParser<
+  ObjectRowTable | GeoJSONTable | DXFArrowTables | DXFDocument,
+  never,
+  DXFLoaderOptions
+>;
 
-function parseTextSync(text: string, options?: DXFLoaderOptions): ObjectRowTable | GeoJSONTable {
+function parseTextSync(
+  text: string,
+  options?: DXFLoaderOptions
+): ObjectRowTable | GeoJSONTable | DXFArrowTables | DXFDocument {
   const dxfOptions = {...DXFLoader.options.dxf, ...options?.dxf};
-  const features = parseDXF(text, dxfOptions);
 
   switch (dxfOptions.shape) {
     case 'geojson-table': {
+      const features = parseDXF(text, dxfOptions);
       const table: GeoJSONTable = {
         shape: 'geojson-table',
         type: 'FeatureCollection',
@@ -84,11 +94,29 @@ function parseTextSync(text: string, options?: DXFLoaderOptions): ObjectRowTable
       return table;
     }
     case 'object-row-table': {
+      const features = parseDXF(text, dxfOptions);
       const table: ObjectRowTable = {
         shape: 'object-row-table',
         data: features
       };
       return table;
+    }
+    case 'arrow-table': {
+      const document = parseDXFDocument(text);
+      return convertDXFDocumentToArrowTables(document, {
+        circleSegments: dxfOptions.circleSegments ?? 72,
+        splineSegmentsPerSpan: dxfOptions.splineSegmentsPerSpan ?? 20,
+        inlineBlockReferences: dxfOptions.inlineBlockReferences ?? true,
+        maxBlockInsertionDepth: dxfOptions.maxBlockInsertionDepth ?? 8,
+        entityTypes: dxfOptions.entityTypes,
+        layers: dxfOptions.layers,
+        includeInvisible: dxfOptions.includeInvisible ?? false,
+        includeFrozenLayers: dxfOptions.includeFrozenLayers ?? false,
+        include3D: dxfOptions.include3D ?? true
+      });
+    }
+    case 'dxf-document': {
+      return parseDXFDocument(text);
     }
     default:
       throw new Error(`DXFLoader: Unsupported shape "${dxfOptions.shape}"`);

@@ -46,7 +46,8 @@
   },
   "dependencies": {
     "@loaders.gl/loader-utils": "^4.4.0-alpha.12",
-    "@loaders.gl/schema": "^4.4.0-alpha.12"
+    "@loaders.gl/schema": "^4.4.0-alpha.12",
+    "apache-arrow": ">=15.0.0"
   },
   "peerDependencies": {
     "@loaders.gl/core": "^4.4.0-alpha.1"

@@ -3,6 +3,7 @@
 // Copyright (c) vis.gl contributors
 
 import type {Feature} from '@loaders.gl/schema';
+import type {DXFDocument} from './types';
 import {tokenizeDXF, parseSections} from './parsers/parse-dxf-sections';
 import {parseHeader} from './parsers/parse-dxf-header';
 import {parseTables} from './parsers/parse-dxf-tables';
@@ -55,4 +56,19 @@ export function parseDXF(text: string, options: ParseDXFOptions = {}): Feature[]
   };
 
   return convertEntitiesToFeatures(entities, tables, blocks, convertOptions);
+}
+
+/**
+ * Parse DXF text content and return the full DXFDocument structure.
+ * This preserves all parsed data (header, tables, blocks, entities)
+ * without converting to GeoJSON.
+ */
+export function parseDXFDocument(text: string): DXFDocument {
+  const pairs = tokenizeDXF(text);
+  const sections = parseSections(pairs);
+  const header = parseHeader(sections.header);
+  const tables = parseTables(sections.tables);
+  const blocks = parseBlocks(sections.blocks);
+  const entities = parseEntitiesWithVertices(sections.entities);
+  return {header, tables, blocks, entities};
 }

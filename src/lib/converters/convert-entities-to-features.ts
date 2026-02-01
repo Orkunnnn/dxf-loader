@@ -106,7 +106,7 @@ export function convertEntityToFeatures(
   }
 }
 
-function shouldIncludeEntity(
+export function shouldIncludeEntity(
   entity: DXFEntity,
   tables: DXFTables,
   options: ConvertOptions
